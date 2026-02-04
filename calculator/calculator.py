@@ -37,11 +37,11 @@ class Calc:
         return result
 
     def division(self, num1, num2):
-        if num2 == 0:  # ✅ اصلاح شد: تقسیم بر صفر
+        if num2 == 0:
             print("❌ Error: Division by zero is not allowed!")
             return None
 
-        result = num1 / num2  # ✅ اصلاح شد: تقسیم نه ضرب
+        result = num1 / num2
         operation = f"{num1} ÷ {num2} = {result:.2f}"
         print(f"✅ Result: {operation}")
         self.record_history(operation)
@@ -66,7 +66,7 @@ class Calc:
         return result
 
     def record_history(self, operation):
-        """ثبت عملیات در تاریخچه"""
+
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.history.append({
             "timestamp": timestamp,
@@ -75,7 +75,7 @@ class Calc:
         self.save_history()
 
     def show_history(self):
-        """نمایش تاریخچه"""
+
         print("\n" + "="*40)
         print("📜 CALCULATION HISTORY")
         print("="*40)
@@ -84,14 +84,14 @@ class Calc:
             print("No calculations yet!")
             return
 
-        for i, record in enumerate(self.history, 1):  # فقط ۵ تا آخر
+        for i, record in enumerate(self.history, 1):
             print(f"{i}. [{record['timestamp']}] {record['operation']}")
 
         print("="*40)
 
 
 def show_menu():
-    """نمایش منو"""
+
     print("="*30)
     print("🧮 CALCULATOR MENU")
     print("="*30)
@@ -118,16 +118,16 @@ def show_menu():
 
 
 def get_number(prompt):
-    """دریافت عدد از کاربر با خطایابی"""
+
     while True:
         try:
-            return float(input(prompt))  # ✅ float برای پشتیبانی از اعشاری
+            return float(input(prompt))
         except ValueError:
             print("⚠️ Please enter a valid number!")
 
 
 def main():
-    """تابع اصلی"""
+
     print("="*40)
     print("🧮 WELCOME TO PYTHON CALCULATOR")
     print("="*40)
@@ -138,23 +138,23 @@ def main():
         choice = show_menu()
 
         if choice is None:
-            continue  # اگر انتخاب نامعتبر بود، منو رو دوباره نشون بده
+            continue
 
-        if choice == 8:  # خروج
+        if choice == 8:
             print("\n👋 Thank you for using the calculator!")
             print("Goodbye! 👋")
             break
 
-        if choice == 7:  # تاریخچه
+        if choice == 7:
             calculator.show_history()
             continue
 
-        # برای عملیات‌های ریاضی، اعداد رو دریافت کن
-        if choice == 6:  # ریشه دوم - فقط یک عدد نیاز داره
+
+        if choice == 6:
             num = get_number("Enter a number: ")
             calculator.square_root(num)
 
-        else:  # عملیات‌های دو عددی
+        else:
             print("\nEnter two numbers:")
             num1 = get_number("First number: ")
             num2 = get_number("Second number: ")
@@ -212,11 +212,11 @@ class Calc:
         return result
 
     def division(self, num1, num2):
-        if num2 == 0:  # ✅ اصلاح شد: تقسیم بر صفر
+        if num2 == 0:
             print("❌ Error: Division by zero is not allowed!")
             return None
 
-        result = num1 / num2  # ✅ اصلاح شد: تقسیم نه ضرب
+        result = num1 / num2
         operation = f"{num1} ÷ {num2} = {result:.2f}"
         print(f"✅ Result: {operation}")
         self.record_history(operation)
@@ -241,7 +241,7 @@ class Calc:
         return result
 
     def record_history(self, operation):
-        """ثبت عملیات در تاریخچه"""
+
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.history.append({
             "timestamp": timestamp,
@@ -250,7 +250,7 @@ class Calc:
         self.save_history()
 
     def show_history(self):
-        """نمایش تاریخچه"""
+
         print("\n" + "="*40)
         print("📜 CALCULATION HISTORY")
         print("="*40)
@@ -259,14 +259,14 @@ class Calc:
             print("No calculations yet!")
             return
 
-        for i, record in enumerate(self.history, 1):  # فقط ۵ تا آخر
+        for i, record in enumerate(self.history, 1):  
             print(f"{i}. [{record['timestamp']}] {record['operation']}")
 
         print("="*40)
 
 
 def show_menu():
-    """نمایش منو"""
+
     print("="*30)
     print("🧮 CALCULATOR MENU")
     print("="*30)
@@ -293,16 +293,16 @@ def show_menu():
 
 
 def get_number(prompt):
-    """دریافت عدد از کاربر با خطایابی"""
+
     while True:
         try:
-            return float(input(prompt))  # ✅ float برای پشتیبانی از اعشاری
+            return float(input(prompt))
         except ValueError:
             print("⚠️ Please enter a valid number!")
 
 
 def main():
-    """تابع اصلی"""
+
     print("="*40)
     print("🧮 WELCOME TO PYTHON CALCULATOR")
     print("="*40)
@@ -313,23 +313,23 @@ def main():
         choice = show_menu()
 
         if choice is None:
-            continue  # اگر انتخاب نامعتبر بود، منو رو دوباره نشون بده
+            continue
 
-        if choice == 8:  # خروج
+        if choice == 8:
             print("\n👋 Thank you for using the calculator!")
             print("Goodbye! 👋")
             break
 
-        if choice == 7:  # تاریخچه
+        if choice == 7:
             calculator.show_history()
             continue
 
-        # برای عملیات‌های ریاضی، اعداد رو دریافت کن
-        if choice == 6:  # ریشه دوم - فقط یک عدد نیاز داره
+
+        if choice == 6:
             num = get_number("Enter a number: ")
             calculator.square_root(num)
 
-        else:  # عملیات‌های دو عددی
+        else:
             print("\nEnter two numbers:")
             num1 = get_number("First number: ")
             num2 = get_number("Second number: ")
