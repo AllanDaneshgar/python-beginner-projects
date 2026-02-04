@@ -6,13 +6,13 @@ class Calc:
 
     def load_history(self):
         try:
-            with open("./history.json", "r", encoding="utf-8") as f:
+            with open("calculator/history.json", "r", encoding="utf-8") as f:
                 return json.load(f)
         except FileNotFoundError:
             return []
 
     def save_history(self):
-        with open("./history.json", "w", encoding="utf-8") as f:
+        with open("calculator/history.json", "w", encoding="utf-8") as f:
             json.dump(self.history, f, indent=4, ensure_ascii=False)
 
     def add(self, num1, num2):
