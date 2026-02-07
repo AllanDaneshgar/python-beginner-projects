@@ -210,3 +210,4 @@ __marimo__/
 **calculator/history.json
 *.json.backup
 history_*.json
+echo "contacts.json" >> .gitignore
