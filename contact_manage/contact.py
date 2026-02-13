@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 
 class Contact():
@@ -6,6 +7,30 @@ class Contact():
         self.filename = file_name
         self.contacts = []
         self.load_contacts()
+
+    def load_contacts(self):
+        if os.path.exists(self.filename):
+            try:
+                with open(self.filename, "r", encoding="utf-8") as file:
+                    self.contacts = json.load(file)
+                print(f"📂 Loaded {len(self.contacts)} contacts")
+
+            except:
+                print("⚠️ Could not load contacts. Starting fresh.")
+                self.contacts = []
+        else:
+            print("📝 No contacts file found. Starting fresh.")
+            self.contacts = []
+
+    def save_contacts(self):
+        with open(self.filename, "w", encoding="utf-8") as file:
+            json.dump(self.contacts, file, indent=2)
+        print("💾 Contacts saved!")
+
+    def get_new_id(self):
+        if self.contacts:
+            return max(c["id"] for c in self.contacts) + 1
+        return 1
 
 def show_menu():
     print("\n" + "-"*30)
@@ -23,7 +48,7 @@ def show_menu():
 
 
 def main():
-    pass
+    print("")
 
 if __name__ == "__main__":
     main()
