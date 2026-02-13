@@ -16,9 +16,8 @@ class ContactManager():
                 with open(self.filename, "r", encoding="utf-8") as file:
                     self.contacts = json.load(file)
                 print(f"📂 Loaded {len(self.contacts)} contacts")
-
-            except:
-                print("⚠️ Could not load contacts. Starting fresh.")
+            except Exception as e:
+                print(f"⚠️ Could not load contacts: {e}. Starting fresh.")
                 self.contacts = []
         else:
             print("📝 No contacts file found. Starting fresh.")
@@ -39,38 +38,47 @@ class ContactManager():
         print("\n➕ ADD NEW CONTACT")
         print("-" * 20)
 
-        name = input("Name: ").strip()
-        for contact in self.contacts:
-            if contact["name"].lower() == name.lower():
+        while True:
+            name = input("Name: ").strip()
+            if not name:
+                print("❌ Name cannot be empty!")
+                continue
+            if any(contact["name"].lower() == name.lower() for contact in self.contacts):
                 print("❌ This Contact already exists!")
-                return
-        if not name:
-            print("❌ Name cannot be empty!\n Defult Value => None")
-            return
+                continue
+            break
 
+        while True:
+            phone = input("Phone: ").strip()
+            if not phone:
+                print("❌ Phone cannot be empty!")
+                continue
+            if not phone.isdigit():
+                print("❌ Phone must contain only digits!")
+                continue
+            if len(phone) > 11:
+                print("❌ The phone number cannot exceed 11 digits!")
+                continue
+            break
 
-        phone = input("phone: ").strip()
-        if not phone:
-            print("❌ Phone cannot be empty!\n Defult Value => None")
-            return
-        elif len(phone) > 11:
-            print("❌ The phone number cannot exceed 11 digits!\n Defult Value => 0")
-            return
+        while True:
+            email = input("Email: ").strip()
+            if not email:
+                print("❌ Email cannot be empty!")
+                continue
+            regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+            if not re.fullmatch(regex, email):
+                print("❌ Invalid email!")
+                continue
+            break
 
-        email = input("email: ").strip()
-        if not email:
-            print("❌ email cannot be empty!\nDefault Value => None")
-            return
-        regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-        if not re.match(regex, email):
-            print("❌ invalid email!")
-            return
-
-        print("Groups: family, friends, work")
-        group = input("Group: ").strip().lower()
-        if group not in ["family", "friends", "work"]:
-            print("⚠️ Invalid group! Using 'friends'")
-            group = "friends"
+        while True:
+            print("Groups: family, friends, work")
+            group = input("Group: ").strip().lower()
+            if group not in ["family", "friends", "work"]:
+                print("⚠️ Invalid group! Please enter again.")
+                continue
+            break
 
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -87,6 +95,21 @@ class ContactManager():
         self.save_contacts()
         print(f"✅ Contact added (ID: {new_contact['id']})")
 
+    def show_all_contacts(self):
+        print("\n👥 ALL CONTACTS")
+        print("=" * 40)
+        if not self.contacts:
+            print("No contacts yet!")
+            return
+        for contact in self.contacts:
+            print(f"ID: {contact['id']}")
+            print(f"Name: {contact['name']}")
+            print(f"Phone: {contact['phone']}")
+            print(f"Email: {contact['email']}")
+            print(f"Group: {contact['group']}")
+            print(f"Time: {contact['time']}")
+            print("-" * 20)
+
 def show_menu():
     print("\n" + "-"*30)
     print("1. ➕ Add new contact")
@@ -95,35 +118,29 @@ def show_menu():
     print("4. 🗑️ Delete contact")
     print("5. 📊 Show statistics")
     print("6. 🚪 Exit")
-
     try:
         choice = int(input("Choose (1-6): "))
         return choice if 1 <= choice <= 6 else None
     except ValueError:
         return None
 
-
 def main():
     print("=" * 50)
     print("📞 WELCOME TO CONTACT MANAGER")
-    print("Contacts are saved in 'contacts.json'")
-
+    print("Contacts are saved in 'contact.json'")
     manager = ContactManager()
-
     while True:
         choice = show_menu()
         if choice == 1:
             manager.add_contact()
-
+        elif choice == 2:
+            manager.show_all_contacts()
         elif choice == 6:
             print("\n👋 Goodbye!")
             print("Thank you for using Contact Manager!")
             break
         else:
-            print("⚠️ Please choose 1-7")
-
-
-
+            print("⚠️ Please choose a valid option (1-6)")
 
 if __name__ == "__main__":
     main()
