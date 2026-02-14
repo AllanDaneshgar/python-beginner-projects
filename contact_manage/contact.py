@@ -110,6 +110,35 @@ class ContactManager():
             print(f"Time: {contact['time']}")
             print("-" * 20)
 
+    def search_contact(self):
+        print("\n🔍 SEARCH CONTACTS")
+        keyword = input("Search Name: ").strip().lower()
+        if not keyword:
+            print("❌ Please enter a search term!")
+            return
+        results = []
+        for c in self.contacts:
+            if keyword in c["name"].lower():
+                results.append(c)
+
+        if not results:
+            print("No contacts found!")
+            return
+
+        for contact in results:
+            print(f"ID: {contact['id']}")
+            print(f"Name: {contact['name']}")
+            print(f"Phone: {contact['phone']}")
+            print(f"Email: {contact['email']}")
+            print(f"Group: {contact['group']}")
+            print(f"Time: {contact['time']}")
+            print("-" * 20)
+
+    def delete_contact(self):
+        print("\n🗑️ DELETE CONTACT")
+        
+
+
 def show_menu():
     print("\n" + "-"*30)
     print("1. ➕ Add new contact")
