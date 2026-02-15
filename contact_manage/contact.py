@@ -45,9 +45,7 @@ class ContactManager:
             if not name:
                 print("❌ Name cannot be empty!")
                 continue
-            if any(
-                contact["name"].lower() == name.lower() for contact in self.contacts
-            ):
+            if any(contact["name"].lower() == name.lower() for contact in self.contacts):
                 print("❌ This Contact already exists!")
                 continue
             break
@@ -62,6 +60,9 @@ class ContactManager:
                 continue
             if len(phone) > 11:
                 print("❌ The phone number cannot exceed 11 digits!")
+                continue
+            if any(contact["phone"] == phone for contact in self.contacts):
+                print("❌ This phone number already exists!")
                 continue
             break
 
@@ -104,7 +105,7 @@ class ContactManager:
         if not self.contacts:
             print("No contacts yet!")
             return
-        sorted_contacts = sorted(self.contacts, key=lambda x: x["name"])
+        sorted_contacts = sorted(self.contacts, key=lambda x: x["name"].lower())
         for contact in sorted_contacts:
             print(f"ID: {contact['id']}")
             print(f"Name: {contact['name']}")
@@ -166,6 +167,9 @@ class ContactManager:
                         return
                     if len(new_phone) > 11:
                         print("❌ Phone cannot exceed 11 digits!")
+                        return
+                    if any(c["phone"] == new_phone for c in self.contacts if c["id"] != contact_id):
+                        print("❌ This phone number already exists!")
                         return
                     contact["phone"] = new_phone
 
