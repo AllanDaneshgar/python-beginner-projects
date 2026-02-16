@@ -209,7 +209,7 @@ __marimo__/
 # History files
 **calculator/history.json
 **contact_manage/contact.json
-**expense_tracker/cexpense.json
+**expense_tracker/expense.json
 *.json.backup
 history_*.json
 echo "contacts.json" >> .gitignore
