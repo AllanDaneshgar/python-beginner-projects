@@ -123,6 +123,11 @@ class ExpenseTracker:
             print(f"Updated_at: {expense['updated_at']}")
             print("-" * 20)
 
+    def delete_expense(self):
+        print("\n🗑️ DELETE Expense")
+        self.show_all_expense()
+        
+
 def show_menu():
     print("\n" + "=" * 35)
     print("💰 EXPENSE TRACKER MENU")
