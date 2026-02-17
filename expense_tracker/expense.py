@@ -126,7 +126,24 @@ class ExpenseTracker:
     def delete_expense(self):
         print("\n🗑️ DELETE Expense")
         self.show_all_expense()
-        
+        try:
+            expenses_id = int(input("\n Enter Expense ID to delete: "))
+        except ValueError:
+            print("❌ Please enter a number!")
+            return
+        for i, expense in enumerate(self.expenses):
+            if expense["id"] == expenses_id:
+                confirm = input(f"Delete {expense['description']}? (y/n): ").lower()
+                if confirm == "y":
+                    del self.expenses[i]
+                    self.save_expense()
+                    print("✅ Expense deleted!")
+                else:
+                    print("❌ Deletion cancelled!")
+                return
+        print(f"❌ Expense with ID {expenses_id} not found!")
+
+    
 
 def show_menu():
     print("\n" + "=" * 35)
@@ -163,7 +180,7 @@ def main():
         elif choice == 3:
             pass
         elif choice == 4:
-            pass
+            tracker.delete_expense()
         elif choice == 5:
             pass
         elif choice == 6:
