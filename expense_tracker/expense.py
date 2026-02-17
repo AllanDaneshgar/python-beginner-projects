@@ -146,30 +146,27 @@ class ExpenseTracker:
     def edit_expense(self):
         print("\n✏️ EDIT Expense")
         self.show_all_expense()
+
         try:
-            expnese_id = int(input("\nEnter contact ID to edit: "))
+            expense_id = int(input("\nEnter expense ID to edit: ").strip())
         except ValueError:
             print("❌ Please enter a number!")
             return
 
         for expense in self.expenses:
+            if expense["id"] == expense_id:
+                print(f"\nEditing Expense ID: {expense_id}")
 
-            if expense["id"] == expnese_id:
-                print(f"\nEditing {expense['description']}")
+                while True:
+                    new_type = input(f"Type [{expense['type']}]: ").strip().lower()
+                    if not new_type:
+                        break
+                    if new_type != "income" and new_type != "expense":
+                        print("❌ Input must be either income or expense!")
+                        continue
+                    expense["type"] = new_type
+                    break
 
-                new_type = input(f"Type [{expense['type']}]: ").strip()
-                if new_type:
-                    duplicate = False
-                    for expense in self.expenses:
-                        if expense['id'] and expense['type'].lower() == new_type.lower():
-                            duplicate = True
-                            break
-                        if duplicate == True:
-                            print("❌ This name already exists!")
-                            return
-                        else:
-                            expense['type'] = new_type
-                            
 
 def show_menu():
     print("\n" + "=" * 35)
