@@ -26,12 +26,12 @@ class ExpenseTracker:
 
     def save_expense(self):
         with open(self.filename, "w", encoding="utf-8") as file:
-            json.dump(self.expenses, file, indent=2, default=str)
+            json.dump(self.expenses, file, indent=2, default=str, ensure_ascii=False)
         print("💾 Expenses saved!")
 
     def get_new_id(self):
         if self.expenses:
-            return max(c["id"] for c in self.expenses) + 1
+            return max(exp.get("id", 0) for exp in self.expenses) + 1
         else:
             return 1
 
@@ -68,11 +68,7 @@ class ExpenseTracker:
             description = input("Description: ").strip()
             if description:
                 break
-            con = (
-                input("Are you sure you don't want a description? (y/n) ")
-                .strip()
-                .lower()
-            )
+            con = input("Are you sure you don't want a description? (y/n) ").strip().lower()
             if con == "y":
                 description = ""
                 break
@@ -80,7 +76,6 @@ class ExpenseTracker:
                 continue
             else:
                 print("Enter y to Yes and n to No!")
-                continue
 
         while True:
             date_input = input(
@@ -115,7 +110,7 @@ class ExpenseTracker:
         print(f"✅ Expense added (ID: {new_expense['id']})")
 
     def show_all_expense(self):
-        print("\n👥 ALL EXPENSES")
+        print("\n💰 ALL EXPENSES")
         print("=" * 40)
         if not self.expenses:
             print("No expenses yet!")
@@ -124,7 +119,7 @@ class ExpenseTracker:
         for expense in sorted_expenses:
             print(f"ID: {expense['id']}")
             print(f"Type: {expense['type']}")
-            print(f"Amount: {expense['amount']:.0f}")
+            print(f"Amount: {expense['amount']:.2f}")
             print(f"Category: {expense['category']}")
             print(f"Description: {expense['description']}")
             print(f"Date: {expense['date']}")
@@ -136,12 +131,13 @@ class ExpenseTracker:
         print("\n🗑️ DELETE Expense")
         self.show_all_expense()
         try:
-            expenses_id = int(input("\n Enter Expense ID to delete: "))
+            expense_id = int(input("\n Enter Expense ID to delete: "))
         except ValueError:
             print("❌ Please enter a number!")
             return
+
         for i, expense in enumerate(self.expenses):
-            if expense["id"] == expenses_id:
+            if expense["id"] == expense_id:
                 confirm = input(f"Delete {expense['description']}? (y/n): ").lower()
                 if confirm == "y":
                     del self.expenses[i]
@@ -150,35 +146,38 @@ class ExpenseTracker:
                 else:
                     print("❌ Deletion cancelled!")
                 return
-        print(f"❌ Expense with ID {expenses_id} not found!")
+
+        print(f"❌ Expense with ID {expense_id} not found!")
 
     def edit_expense(self):
         print("\n✏️ EDIT Expense")
         self.show_all_expense()
         try:
             expense_id = int(input("\nEnter expense ID to edit: ").strip())
-
         except ValueError:
             print("❌ Please enter a number!")
             return
 
         for expense in self.expenses:
-            if expense_id > expense["id"]:
-                print("The ID number is invalid!")
-                return
             if expense["id"] == expense_id:
                 print(f"\nEditing Expense ID: {expense_id}")
 
                 while True:
                     new_type = input(f"Type [{expense['type']}]: ").strip().lower()
                     if not new_type:
-                        print("Please enter the type!")
-                        continue
-                    if new_type != "income" and new_type != "expense":
+                        break
+                    if new_type not in ["income", "expense"]:
                         print("❌ Input must be either income or expense!")
                         continue
                     expense["type"] = new_type
                     break
+
+                expense["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                self.save_expense()
+                print("✅ Expense partially updated!")
+                return
+
+        print("❌ Expense ID not found!")
 
 
 def show_menu():
@@ -202,11 +201,13 @@ def show_menu():
     except ValueError:
         return None
 
+
 def main():
     print("=" * 50)
     print("WELCOME TO EXPENSE TRACKER")
     print("Expenses are saved in 'expense.json'")
     tracker = ExpenseTracker()
+
     while True:
         choice = show_menu()
         if choice == 1:
@@ -229,6 +230,7 @@ def main():
             break
         else:
             print("⚠️ Please choose a valid option (1-8)")
+
 
 if __name__ == "__main__":
     main()
