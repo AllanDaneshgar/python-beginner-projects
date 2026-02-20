@@ -4,6 +4,7 @@ from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 class ExpenseTracker:
     def __init__(self, file_name="expense.json"):
         self.filename = os.path.join(BASE_DIR, file_name)
@@ -13,7 +14,7 @@ class ExpenseTracker:
     def load_expense(self):
         if os.path.exists(self.filename):
             try:
-                with open(self.filename, 'r', encoding='utf-8') as file:
+                with open(self.filename, "r", encoding="utf-8") as file:
                     self.expenses = json.load(file)
                 print(f"📂 Loaded {len(self.expenses)} expenses")
             except Exception as e:
@@ -24,7 +25,7 @@ class ExpenseTracker:
             self.expenses = []
 
     def save_expense(self):
-        with open(self.filename, 'w', encoding='utf-8') as file:
+        with open(self.filename, "w", encoding="utf-8") as file:
             json.dump(self.expenses, file, indent=2, default=str)
         print("💾 Expenses saved!")
 
@@ -67,7 +68,11 @@ class ExpenseTracker:
             description = input("Description: ").strip()
             if description:
                 break
-            con = input("Are you sure you don't want a description? (y/n) ").strip().lower()
+            con = (
+                input("Are you sure you don't want a description? (y/n) ")
+                .strip()
+                .lower()
+            )
             if con == "y":
                 description = ""
                 break
@@ -78,12 +83,16 @@ class ExpenseTracker:
                 continue
 
         while True:
-            date_input = input("Enter transaction date (YYYY-MM-DD, leave empty for today): ").strip()
+            date_input = input(
+                "Enter transaction date (YYYY-MM-DD, leave empty for today): "
+            ).strip()
             if not date_input:
                 transaction_date = datetime.now().strftime("%Y-%m-%d")
                 break
             try:
-                transaction_date = datetime.strptime(date_input, "%Y-%m-%d").strftime("%Y-%m-%d")
+                transaction_date = datetime.strptime(date_input, "%Y-%m-%d").strftime(
+                    "%Y-%m-%d"
+                )
                 break
             except ValueError:
                 print("❌ Invalid date format! Use YYYY-MM-DD")
@@ -98,7 +107,7 @@ class ExpenseTracker:
             "description": description,
             "date": transaction_date,
             "created_at": current_time,
-            "updated_at": current_time
+            "updated_at": current_time,
         }
 
         self.expenses.append(new_expense)
@@ -115,7 +124,7 @@ class ExpenseTracker:
         for expense in sorted_expenses:
             print(f"ID: {expense['id']}")
             print(f"Type: {expense['type']}")
-            print(f"Amount: {expense['amount']}")
+            print(f"Amount: {expense['amount']:.0f}")
             print(f"Category: {expense['category']}")
             print(f"Description: {expense['description']}")
             print(f"Date: {expense['date']}")
@@ -146,21 +155,25 @@ class ExpenseTracker:
     def edit_expense(self):
         print("\n✏️ EDIT Expense")
         self.show_all_expense()
-
         try:
             expense_id = int(input("\nEnter expense ID to edit: ").strip())
+
         except ValueError:
             print("❌ Please enter a number!")
             return
 
         for expense in self.expenses:
+            if expense_id > expense["id"]:
+                print("The ID number is invalid!")
+                return
             if expense["id"] == expense_id:
                 print(f"\nEditing Expense ID: {expense_id}")
 
                 while True:
                     new_type = input(f"Type [{expense['type']}]: ").strip().lower()
                     if not new_type:
-                        break
+                        print("Please enter the type!")
+                        continue
                     if new_type != "income" and new_type != "expense":
                         print("❌ Input must be either income or expense!")
                         continue
@@ -201,7 +214,7 @@ def main():
         elif choice == 2:
             tracker.show_all_expense()
         elif choice == 3:
-            pass
+            tracker.edit_expense()
         elif choice == 4:
             tracker.delete_expense()
         elif choice == 5:
