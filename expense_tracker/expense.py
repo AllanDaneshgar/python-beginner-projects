@@ -68,7 +68,11 @@ class ExpenseTracker:
             description = input("Description: ").strip()
             if description:
                 break
-            con = input("Are you sure you don't want a description? (y/n) ").strip().lower()
+            con = (
+                input("Are you sure you don't want a description? (y/n) ")
+                .strip()
+                .lower()
+            )
             if con == "y":
                 description = ""
                 break
@@ -115,7 +119,7 @@ class ExpenseTracker:
         if not self.expenses:
             print("No expenses yet!")
             return
-        sorted_expenses = sorted(self.expenses, key=lambda x: x["date"])
+        sorted_expenses = sorted(self.expenses, key=lambda x: x["id"])
         for expense in sorted_expenses:
             print(f"ID: {expense['id']}")
             print(f"Type: {expense['type']}")
@@ -171,6 +175,57 @@ class ExpenseTracker:
                         continue
                     expense["type"] = new_type
                     break
+
+                while True:
+                    n_amount_input = input(f"Amount [{expense['amount']}]: ")
+                    if not n_amount_input:
+                        break
+                    try:
+                        new_amount = float(n_amount_input)
+                        if new_amount <= 0:
+                            print("❌ The value must be greater than 0!")
+                            continue
+                        expense["amount"] = new_amount
+                        break
+                    except ValueError:
+                        print("❌ Amount must be a number!")
+
+                while True:
+                    new_Category = (
+                        input(f"Category [{expense['category']}]: ").strip().lower()
+                    )
+                    if not new_Category:
+                        break
+                    expense["category"] = new_Category
+                    break
+
+                while True:
+                    new_description = (
+                        input(f"Description [{expense['description']}]: ")
+                        .strip()
+                        .lower()
+                    )
+                    if not new_description:
+                        break
+                    expense["description"] = new_description
+                    break
+
+                while True:
+                    n_date_input = input(
+                        "Enter transaction date (YYYY-MM-DD, leave empty for today): "
+                    )
+                    if not n_date_input:
+                        transaction_date = datetime.now().strftime("%Y-%m-%d")
+                        expense["date"] = transaction_date
+                        break
+                    try:
+                        transaction_date = datetime.strptime(
+                            n_date_input, "%Y-%m-%d"
+                        ).strftime("%Y-%m-%d")
+                        expense["date"] = transaction_date
+                        break
+                    except ValueError:
+                        print("❌ Invalid date format! Use YYYY-MM-DD")
 
                 expense["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 self.save_expense()
