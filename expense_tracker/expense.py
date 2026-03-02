@@ -234,6 +234,44 @@ class ExpenseTracker:
 
         print("❌ Expense ID not found!")
 
+    def statistics_expense(self):
+        print("Statistics Expense \n")
+        sum_expense = len(self.expenses)
+        print(f"All Expenses is: {sum_expense}\n")
+        print("*" * 20)
+        choice = (
+            input("Wich statistics5 do you choice(type/category): ").strip().lower()
+        )
+        if choice == "type":
+            while True:
+                type_input = input("Enter your type (income/expense): ")
+                count = 0
+                if type_input in ["income", "expense"]:
+                    for i in self.expenses:
+                        if type_input == i["type"]:
+                            count += 1
+                    print(f"Sum of type {type_input} is {count}.")
+                    break
+                else:
+                    print("You shoud Enter type.")
+                    continue
+
+        elif choice == "category":
+            while True:
+                cat_input = input("Enter your Category: ")
+                count = 0
+                if cat_input:
+                    for i in self.expenses:
+                        if cat_input == i["category"]:
+                            count += 1
+                    print(f"Sum of Category {cat_input} is {count}.")
+                    break
+                else:
+                    print("You shoud Enter Category.")
+                    continue
+        else:
+            print("Not any choice")
+
 
 def show_menu():
     print("\n" + "=" * 35)
@@ -276,7 +314,7 @@ def main():
         elif choice == 5:
             pass
         elif choice == 6:
-            pass
+            tracker.statistics_expense()
         elif choice == 7:
             pass
         elif choice == 8:
