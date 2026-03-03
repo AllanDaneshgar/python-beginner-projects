@@ -271,6 +271,8 @@ class ExpenseTracker:
                     continue
         else:
             print("Not any choice")
+    def search_expense(self):
+        pass
 
 
 def show_menu():
@@ -312,7 +314,7 @@ def main():
         elif choice == 4:
             tracker.delete_expense()
         elif choice == 5:
-            pass
+            tracker.search_expense()
         elif choice == 6:
             tracker.statistics_expense()
         elif choice == 7:
