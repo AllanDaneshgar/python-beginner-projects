@@ -272,7 +272,8 @@ class ExpenseTracker:
         else:
             print("Not any choice")
     def search_expense(self):
-        pass
+        print("Search Expense \n")
+        print("Enter in ")
 
 
 def show_menu():
